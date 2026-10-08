@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Mudita Project</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Tiro+Devanagari+Sanskrit&family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Layout concept: a dark hero where marigold rings spread from the Sanskrit word,
+     then three light rooms (body, behavior, mind) and a concentric diagram that echoes the hero. */
+  --bg:#F5F3FA; --surface:#FFFFFF; --surface-2:#ECE8F7;
+  --fg:#1C1A3D; --muted:#55527A; --line:#D8D2EC;
+  --accent:#F5A800; --accent-ink:#1C1A3D; --link:#4A3FB0;
+  --hero-bg:#1C1A3D; --hero-fg:#F5F3FA; --hero-muted:#BDB8E0; --hero-ring:#FFB81C;
+  --font-display:'Young Serif', Georgia, 'Times New Roman', serif;
+  --font-body:'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-deva:'Tiro Devanagari Sanskrit', 'Noto Serif Devanagari', 'Kohinoor Devanagari', serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121027; --surface:#1B1838; --surface-2:#1F1B42;
+    --fg:#EEEBFA; --muted:#A7A3CC; --line:#36316A;
+    --accent:#FFB81C; --accent-ink:#14112E; --link:#FFC857;
+    --hero-bg:#1B1838; --hero-fg:#EEEBFA; --hero-muted:#A7A3CC; --hero-ring:#FFB81C;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121027; --surface:#1B1838; --surface-2:#1F1B42;
+  --fg:#EEEBFA; --muted:#A7A3CC; --line:#36316A;
+  --accent:#FFB81C; --accent-ink:#14112E; --link:#FFC857;
+  --hero-bg:#1B1838; --hero-fg:#EEEBFA; --hero-muted:#A7A3CC; --hero-ring:#FFB81C;
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:1.0625rem;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--link)}
+:focus-visible{outline:3px solid var(--link);outline-offset:3px}
+.hero :focus-visible{outline-color:var(--hero-ring)}
+
+.wrap{max-width:1080px;margin-inline:auto;padding-inline:clamp(16px,4vw,32px)}
+
+/* top bar */
+.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem 2rem;padding-block:1rem}
+.brand{display:flex;align-items:center;gap:.6rem;font-family:var(--font-display);font-size:1.3rem;color:var(--fg);text-decoration:none}
+.brand svg circle.ring{fill:none;stroke:currentColor;stroke-width:1.5}
+.brand svg circle.core{fill:var(--accent)}
+.top nav{display:flex;flex-wrap:wrap;gap:.25rem 1.5rem;font-size:.95rem}
+.top nav a{color:var(--muted);text-decoration:none;padding-block:.35rem}
+.top nav a:hover{color:var(--fg);text-decoration:underline}
+
+/* hero */
+.hero{position:relative;isolation:isolate;background:var(--hero-bg);color:var(--hero-fg);overflow:hidden}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:-1}
+.hero-inner{padding-block:clamp(3rem,8vw,6.5rem) 9rem}
+.glyph{margin-bottom:1.5rem}
+.dev{display:block;font-family:var(--font-deva);font-size:clamp(3.4rem,8vw,5.5rem);line-height:1.15;color:var(--hero-fg);text-shadow:0 0 28px var(--hero-bg)}
+.rom{display:block;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--hero-muted);margin-top:.35rem}
+.eyebrow{margin:0;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--hero-ring)}
+.hero h1{font-family:var(--font-display);font-weight:400;font-size:clamp(3.2rem,10vw,6.5rem);line-height:.98;letter-spacing:-.01em;margin:.6rem 0 1.25rem;text-wrap:balance}
+.lede{max-width:34rem;font-size:1.2rem;color:var(--hero-muted);margin:0}
+.cta{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2rem}
+@media (min-width:960px){
+  .hero-inner{padding-bottom:5.5rem}
+  .glyph{position:absolute;left:78%;top:50%;transform:translate(-50%,-50%);text-align:center;margin:0}
+}
+
+.btn{display:inline-flex;align-items:center;min-height:2.75rem;padding:.65rem 1.25rem;font:600 .98rem var(--font-body);border:2px solid var(--accent);background:var(--accent);color:var(--accent-ink);text-decoration:none;cursor:pointer;transition:transform .15s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:inherit;border-color:currentColor}
+
+/* sections */
+.block{padding-block:clamp(3.5rem,8vw,6rem)}
+.tint{background:var(--surface-2)}
+.kicker{margin:0 0 .75rem;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--link)}
+h2{font-family:var(--font-display);font-weight:400;font-size:clamp(1.9rem,4.5vw,3rem);line-height:1.1;margin:0 0 1.1rem;text-wrap:balance}
+.block p{max-width:62ch;margin:0 0 1rem}
+.muted{color:var(--muted)}
+.split{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(2rem,6vw,4rem);align-items:start}
+@media (max-width:820px){.split{grid-template-columns:minmax(0,1fr)}}
+
+/* four boundless states */
+.states{margin:0;border-bottom:1px solid var(--line)}
+.state{display:grid;grid-template-columns:minmax(0,8.5rem) minmax(0,1fr);gap:.25rem 1rem;padding:1rem 1.1rem;border-top:1px solid var(--line)}
+.state dt{font-family:var(--font-display);font-size:1.2rem;line-height:1.2}
+.state dt span{display:block;font-family:var(--font-body);font-size:.78rem;color:var(--muted);margin-top:.2rem}
+.state dd{margin:0;color:var(--muted)}
+.state dd strong{display:block;color:var(--fg);font-weight:600}
+.state.is-mudita{background:var(--accent);border-top-color:var(--accent)}
+.state.is-mudita,.state.is-mudita dt span,.state.is-mudita dd,.state.is-mudita dd strong{color:var(--accent-ink)}
+
+/* three rooms */
+.rooms{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));gap:1.25rem;margin-top:2.5rem}
+.room{display:flex;flex-direction:column;gap:.8rem;min-width:0;background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--accent);padding:1.5rem}
+.room .deva{font-family:var(--font-deva);font-size:1.6rem;line-height:1.2;color:var(--link)}
+.room h3{font-family:var(--font-display);font-weight:400;font-size:1.7rem;line-height:1.1;margin:0}
+.room p{margin:0;color:var(--muted)}
+.room ul{margin:0;padding-left:1.1rem;color:var(--fg)}
+.room li+li{margin-top:.3rem}
+.room .start{margin-top:auto;padding-top:1rem;border-top:1px dashed var(--line);font-size:.97rem}
+.room .start b{display:block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--link);margin-bottom:.2rem}
+
+/* how it spreads */
+.fig{margin:0 auto;width:100%;max-width:26rem}
+.fig svg{display:block;width:100%;height:auto}
+.fig .c{stroke:var(--line);stroke-width:1}
+.fig .a1{fill:var(--accent);fill-opacity:.14}
+.fig .a2{fill:var(--accent);fill-opacity:.22}
+.fig .a3{fill:var(--accent);fill-opacity:.34}
+.fig .a4{fill:var(--accent)}
+.fig text{font-family:var(--font-body);font-size:12px;font-weight:600;fill:var(--fg);text-anchor:middle}
+.fig text.on-accent{fill:var(--accent-ink);font-size:13px}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s;border-bottom:1px solid var(--line)}
+.steps li{counter-increment:s;display:grid;grid-template-columns:2.5rem minmax(0,1fr);gap:1rem;padding-block:1.1rem;border-top:1px solid var(--line)}
+.steps li::before{content:counter(s);font-family:var(--font-display);font-size:1.9rem;line-height:1;color:var(--link)}
+.steps h3{margin:0 0 .15rem;font-size:1.1rem;font-weight:600}
+.steps p{margin:0;color:var(--muted)}
+
+/* practice tool */
+.practice{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:1.75rem;margin-top:2rem}
+.practice h3{margin:0 0 .75rem;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--link)}
+.practice h3 span{font-family:var(--font-deva);font-size:1.05rem;letter-spacing:0;text-transform:none;margin-left:.4rem}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{font:500 .95rem var(--font-body);text-align:left;min-height:2.5rem;padding:.5rem .85rem;border:1.5px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;transition:border-color .15s ease}
+.chip:hover{border-color:var(--link)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.who{margin-top:2rem;display:flex;flex-direction:column;gap:.4rem;max-width:22rem}
+.who label{font-weight:600;font-size:.95rem}
+.who input{font:inherit;padding:.65rem .8rem;border:1.5px solid var(--line);background:var(--surface);color:var(--fg)}
+.who input::placeholder{color:var(--muted)}
+.result{margin:1.5rem 0 1rem;padding:1.25rem 1.5rem;max-width:44rem;background:var(--surface);border:1px solid var(--line);font-family:var(--font-display);font-size:1.25rem;line-height:1.4}
+
+/* writing */
+.pieces{list-style:none;margin:2rem 0 0;padding:0;border-bottom:1px solid var(--line)}
+.pieces li{display:grid;grid-template-columns:7.5rem minmax(0,1fr) auto;gap:.5rem 1.5rem;align-items:baseline;padding-block:1.25rem;border-top:1px solid var(--line)}
+.pieces .tag{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--muted)}
+.pieces .title{font-family:var(--font-display);font-size:clamp(1.15rem,2.4vw,1.45rem);line-height:1.3}
+.pill{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;border:1px solid var(--link);color:var(--link);padding:.15rem .55rem;white-space:nowrap}
+@media (max-width:700px){.pieces li{grid-template-columns:minmax(0,1fr)}.pill{justify-self:start}}
+
+/* pass it on */
+.note{margin:1.5rem 0;padding:1.25rem 1.5rem;max-width:40rem;background:var(--surface);border:1px solid var(--line);font-family:var(--font-display);font-size:1.2rem;line-height:1.45}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding-block:2.5rem 3rem;font-size:.92rem;color:var(--muted)}
+footer p{max-width:62ch;margin:0 0 .75rem}
+footer strong{color:var(--fg)}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .btn,.chip{transition:none}
+  .btn:hover{transform:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap top">
+  <a class="brand" href="#top" aria-label="The Mudita Project, home">
+    <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle class="ring" cx="13" cy="13" r="12" opacity=".35"/><circle class="ring" cx="13" cy="13" r="8" opacity=".6"/><circle class="core" cx="13" cy="13" r="4"/></svg>
+    Mudita
+  </a>
+  <nav aria-label="Sections">
+    <a href="#idea">The idea</a>
+    <a href="#rooms">Body, behavior, mind</a>
+    <a href="#spreads">How it spreads</a>
+    <a href="#practice">Today's ripple</a>
+    <a href="#writing">Writing</a>
+  </nav>
+</div>
+
+<header class="hero" id="top">
+  <canvas id="ripple" aria-hidden="true"></canvas>
+  <div class="wrap hero-inner">
+    <div class="glyph" lang="sa">
+      <span class="dev">मुदिता</span>
+      <span class="rom">muditā · Pali, Sanskrit</span>
+    </div>
+    <p class="eyebrow">The Mudita Project</p>
+    <h1>Health that spreads.</h1>
+    <p class="lede">Mudita is the old Sanskrit word for gladness at other people's wellbeing. This is a hub for body, behavior, and mind, built on one idea: what helps you should be easy to pass on.</p>
+    <div class="cta">
+      <a class="btn" href="#practice">Build today's ripple</a>
+      <a class="btn ghost" href="#idea">What mudita means</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="block" id="idea">
+  <div class="wrap split">
+    <div>
+      <p class="kicker">The idea</p>
+      <h2>Most wellness advice ends at you.</h2>
+      <p>Advice about sleep, habits, and stress usually stops with the person reading it. Mudita keeps going. It is the practice of feeling real gladness when someone around you is doing well, and it sits beside kindness, compassion, and balance as one of the four boundless states in Buddhist teaching. Patanjali lists the same four in Yoga Sutra 1.33.</p>
+      <p>The Mudita Project puts that idea to work. Every part of the hub asks two questions: what helps me, and how do I hand this to someone else?</p>
+    </div>
+    <dl class="states" aria-label="The four boundless states">
+      <div class="state"><dt>Mettā<span>Sanskrit: Maitrī</span></dt><dd><strong>Loving-kindness</strong>May you be well.</dd></div>
+      <div class="state"><dt>Karuṇā<span>Pali and Sanskrit</span></dt><dd><strong>Compassion</strong>May your suffering ease.</dd></div>
+      <div class="state is-mudita"><dt>Muditā<span>Pali and Sanskrit</span></dt><dd><strong>Sympathetic joy</strong>I am glad that you are well.</dd></div>
+      <div class="state"><dt>Upekkhā<span>Sanskrit: Upekṣā</span></dt><dd><strong>Equanimity</strong>May we meet what comes with balance.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="block tint" id="rooms">
+  <div class="wrap">
+    <p class="kicker">The hub</p>
+    <h2>Three rooms, one house.</h2>
+    <p>Each room covers the basics well before the advanced material. Ancestral practice sits next to current evidence, and every piece says which is which.</p>
+    <div class="rooms">
+      <article class="room">
+        <span class="deva" lang="sa">शरीर</span>
+        <h3>Body</h3>
+        <p>Sleep, movement, food, and seasonal rhythm. Ayurvedic ideas appear as ideas worth testing, next to what current research supports.</p>
+        <ul>
+          <li>Sleep and wind-down routines</li>
+          <li>Everyday movement for desk-bound days</li>
+          <li>Kitchen traditions, sorted into ritual and remedy</li>
+        </ul>
+        <div class="start"><b>Start here</b>Keep one fixed wake-up time for seven days.</div>
+      </article>
+      <article class="room">
+        <span class="deva" lang="sa">आचार</span>
+        <h3>Behavior</h3>
+        <p>Habits and routines that survive a bad week. Behavioral health here means the daily conduct that holds a life together: how you start, stop, and recover.</p>
+        <ul>
+          <li>Habit loops small enough to keep</li>
+          <li>Tracking what actually changes</li>
+          <li>Getting back on track after a lapse</li>
+        </ul>
+        <div class="start"><b>Start here</b>Write tomorrow's top three before you close the laptop.</div>
+      </article>
+      <article class="room">
+        <span class="deva" lang="sa">मनस्</span>
+        <h3>Mind</h3>
+        <p>Emotional literacy, support, and honest conversation. Mental health here means vocabulary, access to care, and fewer things left unsaid at home.</p>
+        <ul>
+          <li>Naming a feeling with more than "fine"</li>
+          <li>How to find a therapist and what the first visit is like</li>
+          <li>Talking about mental health with family</li>
+        </ul>
+        <div class="start"><b>Start here</b>Name today's feeling in one word, out loud.</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="spreads">
+  <div class="wrap split">
+    <figure class="fig" style="margin:0 auto">
+      <svg viewBox="0 0 360 360" role="img" aria-label="Four concentric rings: you, one person, your circle, your community">
+        <circle class="c a1" cx="180" cy="180" r="170"/>
+        <circle class="c a2" cx="180" cy="180" r="125"/>
+        <circle class="c a3" cx="180" cy="180" r="80"/>
+        <circle class="a4" cx="180" cy="180" r="38"/>
+        <text x="180" y="40">Your community</text>
+        <text x="180" y="84">Your circle</text>
+        <text x="180" y="126">One person</text>
+        <text class="on-accent" x="180" y="185">You</text>
+      </svg>
+    </figure>
+    <div>
+      <p class="kicker">How it spreads</p>
+      <h2>Four moves, repeated.</h2>
+      <ol class="steps">
+        <li><div><h3>Notice</h3><p>Catch one thing that made your week easier.</p></div></li>
+        <li><div><h3>Practice</h3><p>Do it long enough that it becomes yours.</p></div></li>
+        <li><div><h3>Share</h3><p>Tell one person, plainly, with no pitch attached.</p></div></li>
+        <li><div><h3>Return</h3><p>Ask how it went for them, and be glad when it works.</p></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="block tint" id="practice">
+  <div class="wrap">
+    <p class="kicker">A small tool</p>
+    <h2>Today's ripple.</h2>
+    <p>Choose one small move from each room. The page writes it down so you can keep it or send it to a friend. These are example moves to start from.</p>
+
+    <div class="practice">
+      <div>
+        <h3 id="g-body">Body <span lang="sa">शरीर</span></h3>
+        <div class="chips" role="group" aria-labelledby="g-body">
+          <button type="button" class="chip" aria-pressed="true">A 10 minute walk</button>
+          <button type="button" class="chip" aria-pressed="false">Lights out by 11</button>
+          <button type="button" class="chip" aria-pressed="false">A real breakfast</button>
+          <button type="button" class="chip" aria-pressed="false">5 minutes of stretching</button>
+        </div>
+      </div>
+      <div>
+        <h3 id="g-behavior">Behavior <span lang="sa">आचार</span></h3>
+        <div class="chips" role="group" aria-labelledby="g-behavior">
+          <button type="button" class="chip" aria-pressed="true">Phone out of the bedroom</button>
+          <button type="button" class="chip" aria-pressed="false">One task before email</button>
+          <button type="button" class="chip" aria-pressed="false">Write tomorrow's top three</button>
+          <button type="button" class="chip" aria-pressed="false">Water before coffee</button>
+        </div>
+      </div>
+      <div>
+        <h3 id="g-mind">Mind <span lang="sa">मनस्</span></h3>
+        <div class="chips" role="group" aria-labelledby="g-mind">
+          <button type="button" class="chip" aria-pressed="false">Name the feeling out loud</button>
+          <button type="button" class="chip" aria-pressed="true">Two slow breaths before replying</button>
+          <button type="button" class="chip" aria-pressed="false">Text a friend you miss</button>
+          <button type="button" class="chip" aria-pressed="false">10 minutes of quiet</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="who">
+      <label for="who">Who will you tell? (optional)</label>
+      <input id="who" type="text" autocomplete="off" placeholder="A first name">
+    </div>
+
+    <p class="result" id="ripple-out" aria-live="polite"></p>
+    <button type="button" class="btn" id="copy-ripple">Copy my ripple</button>
+  </div>
+</section>
+
+<section class="block" id="writing">
+  <div class="wrap">
+    <p class="kicker">From the desk</p>
+    <h2>Essays for people who grew up between two kitchens.</h2>
+    <p>Writing on ancestral health and current evidence, with the South Asian diaspora in mind and the door open to everyone. Every piece names its sources and says whether a claim is tradition, evidence, or both.</p>
+    <ul class="pieces">
+      <li><span class="tag">Body</span><span class="title">Ritual and remedy: what to keep from the kitchen medicine cabinet</span><span class="pill">In draft</span></li>
+      <li><span class="tag">Mind</span><span class="title">Why mental health still goes unsaid at the family dinner table</span><span class="pill">In draft</span></li>
+      <li><span class="tag">Behavior</span><span class="title">Reading Ayurveda and the evidence side by side, honestly</span><span class="pill">In draft</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="block tint" id="share">
+  <div class="wrap">
+    <p class="kicker">Pass it on</p>
+    <h2>Mudita only works when it moves.</h2>
+    <p>Copy this note and send it to someone you want to see well.</p>
+    <blockquote class="note" id="note">I came across The Mudita Project, a wellness hub built on the idea of being glad for other people's wellbeing. It covers body, habits, and mental health. I thought of you.</blockquote>
+    <button type="button" class="btn" id="copy-note">Copy the note</button>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>The Mudita Project</strong> offers education and community. It does not provide medical care, diagnosis, or crisis services, and nothing here replaces advice from a licensed professional.</p>
+    <p>If you are in crisis or thinking about harming yourself, call or text 988 in the US or Canada, or contact your local emergency number.</p>
+    <p>© 2026 The Mudita Project</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ripple hero */
+  var cv=document.getElementById('ripple');
+  if(cv&&cv.getContext){
+    var ctx=cv.getContext('2d'),W=0,H=0,ring='#FFB81C',raf=0;
+    var reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
+    var readColors=function(){
+      var v=getComputedStyle(document.documentElement).getPropertyValue('--hero-ring').trim();
+      if(v){ring=v;}
+    };
+    var size=function(){
+      var r=cv.getBoundingClientRect(),d=Math.min(window.devicePixelRatio||1,2);
+      W=r.width;H=r.height;
+      cv.width=Math.round(W*d);cv.height=Math.round(H*d);
+      ctx.setTransform(d,0,0,d,0,0);
+    };
+    var frame=function(ms){
+      ctx.clearRect(0,0,W,H);
+      var wide=W>=960,cx=W*(wide?0.78:0.5),cy=H*(wide?0.5:0.86);
+      var maxR=Math.hypot(Math.max(cx,W-cx),Math.max(cy,H-cy));
+      var n=8,t=ms/1000/14;
+      ctx.lineWidth=1.5;ctx.strokeStyle=ring;
+      for(var i=0;i<n;i++){
+        var p=(t+i/n)%1;
+        ctx.globalAlpha=Math.pow(1-p,1.6)*0.75;
+        ctx.beginPath();ctx.arc(cx,cy,p*maxR+24,0,Math.PI*2);ctx.stroke();
+      }
+      ctx.globalAlpha=1;
+    };
+    var loop=function(ms){frame(ms);raf=requestAnimationFrame(loop);};
+    var start=function(){
+      cancelAnimationFrame(raf);
+      if(reduce.matches){frame(4000);}else{raf=requestAnimationFrame(loop);}
+    };
+    readColors();size();start();
+    window.addEventListener('resize',function(){size();start();});
+    if(reduce.addEventListener){reduce.addEventListener('change',start);}
+    new MutationObserver(function(){readColors();start();}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  }
+
+  /* copy helper with selection fallback */
+  function copyText(text,node,btn){
+    var label=btn.textContent;
+    var done=function(m){btn.textContent=m;setTimeout(function(){btn.textContent=label;},2000);};
+    var fallback=function(){
+      try{
+        var r=document.createRange();r.selectNodeContents(node);
+        var s=window.getSelection();s.removeAllRanges();s.addRange(r);
+        done('Selected, press copy');
+      }catch(e){done('Copy it by hand');}
+    };
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){done('Copied');},fallback);
+    }else{fallback();}
+  }
+
+  /* today's ripple */
+  var out=document.getElementById('ripple-out');
+  var who=document.getElementById('who');
+  var render=function(){
+    var picks=[];
+    document.querySelectorAll('.chips').forEach(function(g){
+      var s=g.querySelector('.chip[aria-pressed="true"]');
+      if(s){picks.push(s.textContent.trim());}
+    });
+    var name=who.value.trim();
+    if(!picks.length){out.textContent="Pick one move from any room to start today's ripple.";return;}
+    out.textContent="Today's ripple: "+picks.join(', ')+'. '+(name?'I will tell '+name+' how it goes.':'I will tell one person how it goes.');
+  };
+  document.querySelectorAll('.chips').forEach(function(g){
+    g.addEventListener('click',function(e){
+      var b=e.target.closest('button.chip');
+      if(!b){return;}
+      var on=b.getAttribute('aria-pressed')==='true';
+      g.querySelectorAll('.chip').forEach(function(c){c.setAttribute('aria-pressed','false');});
+      if(!on){b.setAttribute('aria-pressed','true');}
+      render();
+    });
+  });
+  who.addEventListener('input',render);
+  render();
+
+  document.getElementById('copy-ripple').addEventListener('click',function(){
+    copyText(out.textContent,out,this);
+  });
+  var note=document.getElementById('note');
+  document.getElementById('copy-note').addEventListener('click',function(){
+    copyText(note.textContent.trim(),note,this);
+  });
+})();
+</script>
+</body>
+</html>
